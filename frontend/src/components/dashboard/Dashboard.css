@@ -1,0 +1,79 @@
+/* Add to your Dashboard.css or create it if needed */
+.filter-container {
+  background-color: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  border: 1px solid #333;
+}
+
+.filter-container h3 {
+  display: flex;
+  align-items: center;
+  color: #4caf50;
+  margin-bottom: 1rem;
+}
+
+.filter-container h3 svg {
+  margin-right: 0.5rem;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.filter-item {
+  margin-bottom: 1rem;
+}
+
+.filter-item label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
+}
+
+.filter-item input[type="range"] {
+  width: 100%;
+  accent-color: #4caf50;
+}
+
+.filter-item input[type="checkbox"] {
+  margin-right: 0.5rem;
+  accent-color: #4caf50;
+}
+
+.filter-item select {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #2c2c2c;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  border-radius: 4px;
+}
+
+.filter-results {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #444;
+  color: #e0e0e0;
+}
+
+.stats-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4caf50;
+}
