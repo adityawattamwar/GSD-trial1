@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Link } from "react-router-dom";
-import {
-  FaLeaf,
-  FaRecycle,
-  FaShoppingCart,
-  FaInfoCircle,
-} from "react-icons/fa";
+import { FaInfoCircle, FaRocket, FaStar, FaMeteor, FaSatellite } from "react-icons/fa";
+import ProductCard from "./ProductCard";
 import { useCart } from "../../context/CartContext";
 import axiosInstance, { getMockProducts } from "../../utils/axiosConfig";
 
@@ -164,25 +159,7 @@ const ProductList = ({ onApiCall }) => {
     addToCart(product);
   };
 
-  // Render sustainability badge based on score
-  const renderSustainabilityBadge = (score) => {
-    if (score >= 90) {
-      return (
-        <div title="Excellent sustainability rating" className="eco-badge">
-          <FaLeaf color="#2e7d32" />
-          <span>Excellent</span>
-        </div>
-      );
-    } else if (score >= 70) {
-      return (
-        <div title="Good sustainability rating" className="eco-badge">
-          <FaLeaf color="#4caf50" />
-          <span>Good</span>
-        </div>
-      );
-    }
-    return null;
-  };
+  // Removed unused sustainability badge function
 
   return (
     <div>
@@ -209,35 +186,24 @@ const ProductList = ({ onApiCall }) => {
         </div>
       )}
 
-      {/* Filters */}
-      <div
-        className="filters"
-        style={{
-          marginBottom: "20px",
-          padding: "15px",
-          backgroundColor: "#f1f8e9",
-          borderRadius: "8px",
-        }}
-      >
-        <h3>Filter Products</h3>
-        <div
-          style={{
-            display: "flex",
-            gap: "15px",
-            flexWrap: "wrap",
-            margin: "10px 0",
-          }}
-        >
-          <div>
-            <label htmlFor="category">Category: </label>
+      {/* Cosmic Filters */}
+      <div className="cosmic-filters stars-bg">
+        <h3 className="cosmic-filter-title">
+          <FaSatellite className="cosmic-icon" />
+          <span>Filter Cosmic Products</span>
+        </h3>
+        
+        <div className="cosmic-filter-controls">
+          <div className="filter-group">
+            <label htmlFor="category" className="cosmic-label">Galaxy: </label>
             <select
               id="category"
               name="category"
               value={filters.category}
               onChange={handleFilterChange}
-              className="filter-select"
+              className="cosmic-select"
             >
-              <option value="">All Categories</option>
+              <option value="">All Galaxies</option>
               <option value="Electronics">Electronics</option>
               <option value="Clothing">Clothing</option>
               <option value="Office">Office</option>
@@ -245,74 +211,49 @@ const ProductList = ({ onApiCall }) => {
             </select>
           </div>
 
-          <div>
-            <label htmlFor="sort">Sort by: </label>
+          <div className="filter-group">
+            <label htmlFor="sort" className="cosmic-label">Order by: </label>
             <select
               id="sort"
               name="sort"
               value={filters.sort}
               onChange={handleFilterChange}
-              className="filter-select"
+              className="cosmic-select"
             >
               <option value="price-asc">Price: Low to High</option>
               <option value="price-desc">Price: High to Low</option>
-              <option value="sustainability">Sustainability</option>
+              <option value="sustainability">Cosmic Rating</option>
             </select>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className="filter-group checkbox-group">
             <input
               type="checkbox"
               id="sustainableOnly"
               name="sustainableOnly"
               checked={filters.sustainableOnly}
               onChange={handleFilterChange}
-              className="green-checkbox"
+              className="cosmic-checkbox"
             />
             <label
               htmlFor="sustainableOnly"
-              style={{
-                marginLeft: "5px",
-                display: "flex",
-                alignItems: "center",
-              }}
+              className="cosmic-label checkbox-label"
             >
-              <FaLeaf color="#2e7d32" style={{ marginRight: "5px" }} />
-              Sustainable Products Only
+              <FaMeteor className="cosmic-icon meteor-icon" />
+              <span>Premium Cosmic Items Only</span>
             </label>
           </div>
         </div>
       </div>
 
-      {/* Loading and Error States */}
+      {/* Cosmic Loading State */}
       {loading && (
-        <div
-          style={{
-            textAlign: "center",
-            padding: "30px",
-            backgroundColor: "white",
-            borderRadius: "8px",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-            marginBottom: "20px",
-          }}
-        >
-          <div
-            className="loading-spinner"
-            style={{
-              display: "inline-block",
-              width: "40px",
-              height: "40px",
-              border: "4px solid rgba(0, 0, 0, 0.1)",
-              borderLeftColor: "#2e7d32",
-              borderRadius: "50%",
-              animation: "spin 1s linear infinite",
-              marginBottom: "10px",
-            }}
-          ></div>
-          <style>
-            {`@keyframes spin { to { transform: rotate(360deg) } }`}
-          </style>
-          <p>Loading sustainable products...</p>
+        <div className="cosmic-loading-container">
+          <div className="cosmic-loading-spinner"></div>
+          <div className="cosmic-loading-orbit">
+            <div className="cosmic-loading-planet"></div>
+          </div>
+          <p>Loading cosmic products...</p>
         </div>
       )}
       {error && !usingMockData && (
@@ -328,78 +269,157 @@ const ProductList = ({ onApiCall }) => {
           <p>{error}</p>
         </div>
       )}
-
+      {/* Add filter and loading styles */}
+      <style jsx>{`
+        .cosmic-filters {
+          margin-bottom: 25px;
+          padding: 20px;
+          background: linear-gradient(145deg, #1E293B, #0F172A);
+          border-radius: 12px;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+          border: 1px solid #2D3748;
+        }
+        
+        .cosmic-filter-title {
+          display: flex;
+          align-items: center;
+          color: #A5F3FC;
+          margin-bottom: 15px;
+          position: relative;
+        }
+        
+        .cosmic-icon {
+          margin-right: 10px;
+          color: #EC4899;
+        }
+        
+        .meteor-icon {
+          color: #F472B6;
+          animation: pulse 2s infinite alternate;
+        }
+        
+        .cosmic-filter-controls {
+          display: flex;
+          gap: 20px;
+          flex-wrap: wrap;
+          margin-top: 15px;
+        }
+        
+        .filter-group {
+          display: flex;
+          align-items: center;
+        }
+        
+        .cosmic-label {
+          color: #E2E8F0;
+          margin-right: 8px;
+        }
+        
+        .checkbox-label {
+          display: flex;
+          align-items: center;
+        }
+        
+        .cosmic-select {
+          background-color: rgba(30, 41, 59, 0.8);
+          border: 1px solid #4C1D95;
+          color: #E2E8F0;
+          padding: 8px 12px;
+          border-radius: 8px;
+          min-width: 160px;
+          font-size: 0.95rem;
+          box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+          transition: all 0.3s ease;
+        }
+        
+        .cosmic-select:hover, .cosmic-select:focus {
+          box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+          border-color: #7E22CE;
+          outline: none;
+        }
+        
+        .cosmic-checkbox {
+          width: 18px;
+          height: 18px;
+          margin-right: 8px;
+          accent-color: #8B5CF6;
+        }
+        
+        .cosmic-loading-container {
+          position: relative;
+          text-align: center;
+          padding: 40px;
+          background: linear-gradient(145deg, #1E293B, #0F172A);
+          border-radius: 12px;
+          box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+          margin-bottom: 25px;
+          color: #E2E8F0;
+          overflow: hidden;
+        }
+        
+        .cosmic-loading-spinner {
+          display: inline-block;
+          width: 50px;
+          height: 50px;
+          border: 3px solid rgba(79, 70, 229, 0.1);
+          border-left-color: #8B5CF6;
+          border-top-color: #EC4899;
+          border-radius: 50%;
+          animation: spin 1.5s linear infinite;
+          margin-bottom: 15px;
+        }
+        
+        .cosmic-loading-orbit {
+          position: absolute;
+          width: 160px;
+          height: 160px;
+          border: 1px dashed rgba(124, 58, 237, 0.3);
+          border-radius: 50%;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 0;
+          animation: orbit-spin 10s linear infinite;
+        }
+        
+        .cosmic-loading-planet {
+          position: absolute;
+          width: 14px;
+          height: 14px;
+          background: radial-gradient(#EC4899, #8B5CF6);
+          border-radius: 50%;
+          top: -7px;
+          left: 50%;
+          transform: translateX(-50%);
+          box-shadow: 0 0 10px #EC4899;
+        }
+        
+        @keyframes orbit-spin {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+      `}</style>
       {/* Product Grid */}
       {!loading && !error && (
         <>
           <p style={{ marginBottom: "15px" }}>
             <strong>{products.length}</strong> products found
           </p>
-          <div className="product-grid">
+          <div className="product-grid stars-bg">
+            {/* Add cosmic background elements */}
+            <div className="cosmic-nebula"></div>
+            <div className="shooting-star product-star"></div>
+            <div className="shooting-star product-star delay2"></div>
+            
+            {/* Render simplified product cards */}
             {products.map((product) => (
-              <div key={product._id} className="product-card">
-                <img
-                  src={
-                    product.image ||
-                    `https://via.placeholder.com/300x200?text=${encodeURIComponent(
-                      product.name
-                    )}`
-                  }
-                  alt={product.name}
-                  className="product-image"
-                  // Green practice: Use loading=lazy to defer loading offscreen images
-                  loading="lazy"
-                />
-
-                <div className="product-info">
-                  <h3 className="product-title">
-                    <Link to={`/product/${product._id}`}>{product.name}</Link>
-                  </h3>
-
-                  <p className="product-price">${product.price.toFixed(2)}</p>
-
-                  {/* Sustainability Indicators */}
-                  <div className="sustainability-score">
-                    <span>Sustainability:</span>
-                    <div className="score-bar">
-                      <div
-                        className="score-fill"
-                        style={{ width: `${product.sustainabilityScore}%` }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  {renderSustainabilityBadge(product.sustainabilityScore)}
-
-                  {product.recycledMaterials && (
-                    <div
-                      className="eco-badge"
-                      title="Made with recycled materials"
-                    >
-                      <FaRecycle color="#4caf50" />
-                      <span>Recycled</span>
-                    </div>
-                  )}
-
-                  {/* Carbon Footprint */}
-                  <p
-                    className="carbon-info"
-                    style={{ fontSize: "0.8rem", marginTop: "8px" }}
-                  >
-                    Carbon Footprint: {product.carbonFootprint}kg CO2e
-                  </p>
-
-                  <div className="product-actions">
-                    <button
-                      className="btn btn-block"
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      <FaShoppingCart style={{ marginRight: "5px" }} />
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <ProductCard 
+                key={product._id} 
+                product={product} 
+                onAddToCart={handleAddToCart} 
+              />
             ))}
           </div>
 
@@ -409,26 +429,91 @@ const ProductList = ({ onApiCall }) => {
         </>
       )}
 
-      {/* Green Software Info */}
-      <div
-        style={{
-          marginTop: "30px",
-          padding: "15px",
-          backgroundColor: "#e8f5e9",
-          borderRadius: "8px",
-        }}
-      >
-        <h3 style={{ display: "flex", alignItems: "center" }}>
-          <FaLeaf style={{ marginRight: "8px" }} />
-          Green Shopping Tips
+      {/* Cosmic Shopping Tips */}
+      <div className="cosmic-tips-container stars-bg">
+        <h3 className="cosmic-tips-title">
+          <FaRocket className="cosmic-icon" />
+          <span>Cosmic Shopping Tips</span>
         </h3>
-        <ul style={{ marginTop: "10px", marginLeft: "20px" }}>
-          <li>Look for products with high sustainability scores</li>
-          <li>Consider the carbon footprint of each product</li>
-          <li>Choose items made from recycled materials when possible</li>
-          <li>Consolidate your orders to reduce shipping emissions</li>
+        <ul className="cosmic-tips-list">
+          <li><FaStar className="tip-icon" /> Find products that match your cosmic style</li>
+          <li><FaStar className="tip-icon" /> Explore our interstellar collection</li>
+          <li><FaStar className="tip-icon" /> Combine items for a complete space-themed experience</li>
+          <li><FaStar className="tip-icon" /> Check our home page for new cosmic arrivals</li>
         </ul>
       </div>
+      
+      {/* Add styles for cosmic elements */}
+      <style jsx>{`
+        .cosmic-tips-container {
+          margin-top: 30px;
+          padding: 20px;
+          background: linear-gradient(145deg, #1E293B, #0F172A);
+          border-radius: 12px;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+          border: 1px solid #2D3748;
+        }
+        
+        .cosmic-tips-title {
+          display: flex;
+          align-items: center;
+          color: #A5F3FC;
+          margin-bottom: 15px;
+          position: relative;
+        }
+        
+        .cosmic-icon {
+          margin-right: 10px;
+          color: #EC4899;
+          animation: pulse 2s infinite alternate;
+        }
+        
+        .cosmic-tips-list {
+          margin-left: 20px;
+          color: #E2E8F0;
+        }
+        
+        .cosmic-tips-list li {
+          margin-bottom: 8px;
+          display: flex;
+          align-items: center;
+        }
+        
+        .tip-icon {
+          color: #8B5CF6;
+          margin-right: 8px;
+          font-size: 0.8rem;
+        }
+        
+        .cosmic-nebula {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          background: radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.15), transparent 70%);
+          z-index: 0;
+        }
+        
+        .product-star {
+          animation-delay: 4s;
+          top: 20%;
+          left: 30%;
+        }
+        
+        .delay2 {
+          animation-delay: 7s;
+          top: 70%;
+          left: 65%;
+        }
+        
+        @keyframes pulse {
+          0% { transform: scale(1); opacity: 0.8; }
+          100% { transform: scale(1.2); opacity: 1; }
+        }
+      `}</style>
     </div>
   );
 };

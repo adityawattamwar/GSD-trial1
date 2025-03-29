@@ -1,0 +1,247 @@
+/* ProductCard.css - Cosmic Space Theme */
+
+.product-card {
+  position: relative;
+  background: linear-gradient(145deg, #1E293B, #0F172A);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #2D3748;
+  min-height: 380px;
+  z-index: 1;
+}
+
+/* Cosmic glow effect */
+.cosmic-glow {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, rgba(139, 92, 246, 0) 70%);
+  border-radius: 50%;
+  filter: blur(20px);
+  animation: pulse 4s infinite alternate;
+  z-index: 0;
+}
+
+/* Star field background */
+.stars-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(1px 1px at 25px 5px, white, transparent),
+    radial-gradient(1px 1px at 50px 25px, white, transparent),
+    radial-gradient(1px 1px at 125px 20px, white, transparent),
+    radial-gradient(1.5px 1.5px at 50px 75px, white, transparent),
+    radial-gradient(2px 2px at 175px 125px, white, transparent),
+    radial-gradient(2.5px 2.5px at 85px 175px, white, transparent);
+  opacity: 0.2;
+  z-index: 0;
+}
+
+/* Card hover effects */
+.product-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3);
+}
+
+.product-card:hover .cosmic-glow {
+  animation: glowPulse 2s infinite alternate;
+}
+
+.product-card:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #8B5CF6, #EC4899, #8B5CF6);
+  z-index: 2;
+}
+
+/* Product image styling */
+.product-image {
+  height: 200px;
+  width: 100%;
+  object-fit: contain;
+  background: linear-gradient(to bottom, #2D3748, #1E293B);
+  padding: 10px;
+  transition: transform 0.5s ease;
+  border-bottom: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+/* Product info section */
+.product-info {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+}
+
+/* Product title styling */
+.product-title {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.product-title a {
+  color: #E2E8F0;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: inline-block;
+  position: relative;
+}
+
+.title-text {
+  position: relative;
+  z-index: 1;
+}
+
+.title-hover-effect {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #8B5CF6, #EC4899);
+  transition: width 0.3s ease;
+}
+
+.product-title a:hover {
+  color: #A5F3FC;
+}
+
+.product-title a:hover .title-hover-effect {
+  width: 100%;
+}
+
+/* Product price styling */
+.product-price {
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #A5F3FC;
+  display: flex;
+  align-items: baseline;
+}
+
+.price-currency {
+  font-size: 1rem;
+  margin-right: 2px;
+  opacity: 0.8;
+}
+
+/* Add to cart button styling */
+.product-actions {
+  margin-top: auto;
+  position: relative;
+}
+
+.cosmic-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #6D28D9, #8B5CF6);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.button-icon {
+  margin-right: 8px;
+}
+
+.cosmic-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  transition: left 0.7s ease;
+}
+
+.cosmic-button:hover::before {
+  left: 100%;
+}
+
+.cosmic-button:hover {
+  background: linear-gradient(135deg, #7C3AED, #9333EA);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
+}
+
+.button-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  background: radial-gradient(circle at center, rgba(165, 243, 252, 0.6) 0%, transparent 70%);
+  transition: opacity 0.3s ease;
+}
+
+.cosmic-button:hover .button-glow {
+  opacity: 0.3;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.3; }
+  100% { transform: scale(1.2); opacity: 0.6; }
+}
+
+@keyframes glowPulse {
+  0% { filter: blur(15px); opacity: 0.4; }
+  100% { filter: blur(25px); opacity: 0.8; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .product-card {
+    min-height: 320px;
+  }
+  
+  .product-image {
+    height: 160px;
+  }
+  
+  .product-title {
+    font-size: 1rem;
+  }
+  
+  .product-price {
+    font-size: 1.2rem;
+  }
+}
