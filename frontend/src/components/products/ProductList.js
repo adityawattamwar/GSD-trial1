@@ -226,23 +226,7 @@ const ProductList = ({ onApiCall }) => {
             </select>
           </div>
 
-          <div className="filter-group checkbox-group">
-            <input
-              type="checkbox"
-              id="sustainableOnly"
-              name="sustainableOnly"
-              checked={filters.sustainableOnly}
-              onChange={handleFilterChange}
-              className="cosmic-checkbox"
-            />
-            <label
-              htmlFor="sustainableOnly"
-              className="cosmic-label checkbox-label"
-            >
-              <FaMeteor className="cosmic-icon meteor-icon" />
-              <span>Premium Cosmic Items Only</span>
-            </label>
-          </div>
+          
         </div>
       </div>
 

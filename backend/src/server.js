@@ -402,25 +402,31 @@ process.on("SIGINT", () => {
 // Import routes
 const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
-
+const authRoutes = require("./routes/authRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 /**
  * Middleware Configuration with Green Practices
  */
-
 // Security middleware (green practice: efficient security implementation)
 app.use(helmet());
+
+// Parse JSON bodies (must be before routes)
+app.use(express.json());
+
+// Parse URL-encoded bodies (must be before routes)
+app.use(express.urlencoded({ extended: true }));
+
+// Route definitions
+app.use("/api/auth", authRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 // Compression middleware (green practice: reduces network traffic by 40-60%)
 app.use(compression());
 
 // Minimal logging - 'tiny' format (green practice: reduces storage usage)
 app.use(morgan("tiny"));
-
-// Parse JSON bodies
-app.use(express.json());
-
-// Parse URL-encoded bodies
-app.use(express.urlencoded({ extended: true }));
 
 /**
  * API Routes
@@ -430,8 +436,6 @@ app.use(express.urlencoded({ extended: true }));
  * - Selective field retrieval to minimize response size
  * - Efficient database indexing
  */
-app.use("/api/products", productRoutes);
-app.use("/api/cart", cartRoutes);
 
 // Health check route
 app.get("/api/health", (req, res) => {

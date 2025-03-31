@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { FaRocket, FaShoppingCart, FaComments, FaChartLine, FaStar, FaSpaceShuttle } from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { 
+  FaRocket, FaShoppingCart, FaComments, FaChartLine, FaStar, FaSpaceShuttle, 
+  FaUser, FaSignInAlt, FaUserPlus, FaSignOutAlt, FaClipboardList, FaUserAstronaut, 
+  FaCaretDown 
+} from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 
 const Header = ({ metrics }) => {
   const { totalItems } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   
   // Handle scroll effect
   useEffect(() => {
@@ -17,6 +26,18 @@ const Header = ({ metrics }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  
+  // Handle click outside dropdown to close it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownRef]);
   
   // Cosmic energy rating (replaced green energy class)
   const getCosmicEnergyRating = () => {
@@ -29,6 +50,13 @@ const Header = ({ metrics }) => {
     if (score < 30) return 'Stellar';
     if (score < 50) return 'Solar';
     return 'Cosmic';
+  };
+  
+  // Handle logout
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+    setDropdownOpen(false);
   };
   
   return (
@@ -84,6 +112,58 @@ const Header = ({ metrics }) => {
                 <div className="nav-highlight"></div>
               </Link>
             </li>
+            
+            {/* Authentication Links */}
+            {isAuthenticated ? (
+              <li className="user-dropdown" ref={dropdownRef}>
+                <button 
+                  className={`dropdown-trigger ${dropdownOpen ? 'active' : ''}`}
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                >
+                  <FaUserAstronaut className="nav-icon" />
+                  <span className="nav-text">{user?.name?.split(' ')[0] || 'Explorer'}</span>
+                  <FaCaretDown className="caret-icon" />
+                </button>
+                
+                {dropdownOpen && (
+                  <div className="dropdown-menu">
+                    <Link to="/profile" onClick={() => setDropdownOpen(false)}>
+                      <FaUser className="dropdown-icon" />
+                      Profile
+                    </Link>
+                    <Link to="/orders" onClick={() => setDropdownOpen(false)}>
+                      <FaClipboardList className="dropdown-icon" />
+                      My Orders
+                    </Link>
+                    <Link to="/dashboard" onClick={() => setDropdownOpen(false)}>
+                      <FaChartLine className="dropdown-icon" />
+                      Dashboard
+                    </Link>
+                    <button className="logout-button" onClick={handleLogout}>
+                      <FaSignOutAlt className="dropdown-icon" />
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </li>
+            ) : (
+              <>
+                <li>
+                  <Link to="/login" className={location.pathname === '/login' ? 'active' : ''}>
+                    <FaSignInAlt className="nav-icon" />
+                    <span className="nav-text">Login</span>
+                    <div className="nav-highlight"></div>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/register" className={location.pathname === '/register' ? 'active' : ''}>
+                    <FaUserPlus className="nav-icon" />
+                    <span className="nav-text">Register</span>
+                    <div className="nav-highlight"></div>
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </nav>
       </div>
@@ -206,6 +286,132 @@ const Header = ({ metrics }) => {
           color: white;
           text-shadow: none;
           box-shadow: 0 0 10px rgba(244, 114, 182, 0.6);
+        }
+        
+        /* User dropdown styles */
+        .user-dropdown {
+          position: relative;
+          height: 100%;
+        }
+        
+        .dropdown-trigger {
+          display: flex;
+          align-items: center;
+          background: none;
+          border: none;
+          color: var(--light-text);
+          padding: 0.5rem 0.75rem;
+          cursor: pointer;
+          font-family: inherit;
+          font-size: inherit;
+          transition: all 0.3s ease;
+        }
+        
+        .dropdown-trigger:hover,
+        .dropdown-trigger.active {
+          color: #f9fafb;
+          text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .caret-icon {
+          margin-left: 0.25rem;
+          transition: transform 0.3s ease;
+        }
+        
+        .dropdown-trigger.active .caret-icon {
+          transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+          position: fixed;
+          margin-top: 10px;
+          right: inherit;
+          background: rgba(30, 41, 59, 0.98);
+          max-height: calc(100vh - 80px);
+          overflow-y: auto;
+          border: 1px solid rgba(79, 70, 229, 0.3);
+          border-radius: var(--radius-md);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(79, 70, 229, 0.3);
+          overflow: hidden;
+          z-index: 1000;
+          backdrop-filter: blur(10px);
+          animation: fadeInDown 0.2s ease-out;
+        }
+
+        /* Add custom scrollbar for dropdown */
+        .dropdown-menu::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .dropdown-menu::-webkit-scrollbar-track {
+          background: rgba(79, 70, 229, 0.1);
+        }
+
+        .dropdown-menu::-webkit-scrollbar-thumb {
+          background: rgba(79, 70, 229, 0.3);
+          border-radius: 3px;
+        }
+
+        .dropdown-menu::-webkit-scrollbar-thumb:hover {
+          background: rgba(79, 70, 229, 0.5);
+        }
+        
+        .dropdown-menu a,
+        .dropdown-menu button {
+          display: flex;
+          align-items: center;
+          padding: 0.75rem 1rem;
+          color: var(--text-color);
+          text-decoration: none;
+          transition: all 0.2s ease;
+          border-bottom: 1px solid rgba(79, 70, 229, 0.1);
+          width: 100%;
+          text-align: left;
+          background: none;
+          border: none;
+          font-family: inherit;
+          font-size: inherit;
+          cursor: pointer;
+        }
+        
+        .dropdown-menu a:last-child,
+        .dropdown-menu button:last-child {
+          border-bottom: none;
+        }
+        
+        .dropdown-menu a:hover,
+        .dropdown-menu button:hover {
+          background: rgba(79, 70, 229, 0.1);
+          color: var(--primary-color);
+          padding-left: 1.25rem;
+        }
+        
+        .dropdown-icon {
+          margin-right: 0.75rem;
+          color: var(--primary-color);
+        }
+        
+        .logout-button {
+          color: #ef4444 !important;
+        }
+        
+        .logout-button:hover {
+          background: rgba(239, 68, 68, 0.1) !important;
+        }
+        
+        .logout-button .dropdown-icon {
+          color: #ef4444;
+        }
+        
+        @keyframes fadeInDown {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         
         @keyframes pulse {

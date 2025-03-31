@@ -3,9 +3,11 @@
   - Uses system fonts when possible (reduces font download)
   - Uses semantic HTML elements and optimized assets
   - Uses efficient CSS selectors (faster rendering)
-  - Features animated cosmic backgrounds and star effects
+  - Static star backgrounds (no animations for better performance)
 */
 
+/* Keyframe definitions kept for reference but not used */
+/*
 @keyframes starTwinkle {
   0%, 100% { opacity: 0.2; }
   50% { opacity: 1; }
@@ -26,6 +28,7 @@
   0% { transform: translateX(0) translateY(0) rotate(45deg); opacity: 1; }
   100% { transform: translateX(400px) translateY(-400px) rotate(45deg); opacity: 0; }
 }
+*/
 
 :root {
   /* Cosmic Space Color Palette */
@@ -135,32 +138,23 @@ body::before {
   z-index: -1;
 }
 
-/* Shooting star elements */
+/* Shooting star elements - disabled */
 .shooting-star {
+  display: none; /* Hide completely */
   position: fixed;
   width: 100px;
   height: 3px;
   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));
-  top: 50px;
-  left: 80px;
   opacity: 0;
-  animation: shootingStar 6s linear infinite;
-  animation-delay: 3s;
-  transform-origin: 0 0;
+  /* Animation removed */
   pointer-events: none;
   z-index: 10;
 }
 
-.shooting-star:nth-child(2) {
-  top: 150px;
-  left: 200px;
-  animation-delay: 7s;
-}
-
+/* Hide all instances */
+.shooting-star:nth-child(2),
 .shooting-star:nth-child(3) {
-  top: 300px;
-  left: 400px;
-  animation-delay: 11s;
+  display: none;
 }
 
 /* Smooth scrolling for better UX */
