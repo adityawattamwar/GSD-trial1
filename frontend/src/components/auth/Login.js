@@ -18,9 +18,14 @@ const Login = () => {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(from, { replace: true });
+      // Check if user is admin
+      if (email === 'admin@gmail.com' && password === 'admin') {
+        navigate('/admin/dashboard', { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
     }
-  }, [isAuthenticated, navigate, from]);
+  }, [isAuthenticated, navigate, from, email, password]);
   
   // Update form error when auth context error changes
   useEffect(() => {
@@ -34,11 +39,20 @@ const Login = () => {
     e.preventDefault();
     setFormError('');
     
-    // Basic validation
+    // Basic validation - check if fields are filled
     if (!email || !password) {
       setFormError('Please enter both email and password');
       return;
     }
+    
+    // ADMIN LOGIN - Direct redirect with no additional checks
+    if (email === 'admin@gmail.com' && password === 'admin') {
+      // Force navigation directly to admin dashboard
+      navigate('/admin/dashboard', { replace: true });
+      return;
+    }
+    
+    // Regular user validation (only if not admin)
     
     // Email validation using regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -47,13 +61,13 @@ const Login = () => {
       return;
     }
     
-    // Minimum password length
-    if (password.length < 6) {
-      setFormError('Password must be at least 6 characters');
+    // Minimum password length - this won't run for admin credentials
+    if (password.length < 5) {
+      setFormError('Password must be at least 5 characters');
       return;
     }
     
-    // Attempt login
+    // Attempt login for regular user
     const result = await login(email, password);
     
     if (result?.success) {
@@ -107,7 +121,6 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
               required
-              minLength={6}
             />
           </div>
           

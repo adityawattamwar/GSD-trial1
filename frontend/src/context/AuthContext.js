@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // Configure axios auth header when token changes
   useEffect(() => {
@@ -110,11 +111,33 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       
+      // Special case for admin
+      if (email === 'admin@gmail.com' && password === 'admin') {
+        // Create an admin user object
+        const adminUser = {
+          _id: 'admin',
+          email: 'admin@gmail.com',
+          username: 'Administrator',
+          isAdmin: true
+        };
+        
+        // Set admin state
+        setUser(adminUser);
+        setIsAdmin(true);
+        
+        // Store in localStorage to persist admin session
+        localStorage.setItem('user', JSON.stringify(adminUser));
+        
+        return { success: true, isAdmin: true };
+      }
+      
+      // Regular user login
       const response = await axios.post('/api/auth/login', { email, password });
       
       if (response.data.success) {
         setToken(response.data.token);
         setUser(response.data.user);
+        setIsAdmin(false);
         return { success: true };
       }
     } catch (err) {
@@ -133,7 +156,7 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(async () => {
     try {
       // Call logout endpoint (optional, server doesn't do much for stateless auth)
-      if (token) {
+      if (token && !isAdmin) {
         await axios.post('/api/auth/logout');
       }
     } catch (err) {
@@ -142,8 +165,10 @@ export const AuthProvider = ({ children }) => {
       // Clear state and storage regardless of API call result
       setToken(null);
       setUser(null);
+      setIsAdmin(false);
+      localStorage.removeItem('user');
     }
-  }, [token]);
+  }, [token, isAdmin]);
 
   // Update profile
   const updateProfile = async (userData) => {
@@ -202,6 +227,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     error,
     isAuthenticated: !!user,
+    isAdmin,
     register,
     login,
     logout,

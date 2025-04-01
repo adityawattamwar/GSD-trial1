@@ -12,6 +12,7 @@ const router = express.Router();
 const { check } = require('express-validator');
 const orderController = require('../controllers/orderController');
 const { protect } = require('../middleware/authMiddleware');
+const Order = require('../models/Order');
 
 /**
  * @route   POST /api/orders
@@ -60,6 +61,53 @@ router.post(
 router.get('/', protect, orderController.getMyOrders);
 
 /**
+ * @route   GET /api/orders/admin/count
+ * @desc    Get direct order count from database for admin
+ * @access  Public (for admin dashboard)
+ */
+router.get('/admin/count', async (req, res) => {
+  try {
+    const count = await Order.countDocuments();
+    res.status(200).json({ success: true, count });
+  } catch (error) {
+    console.error('Error counting orders:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+/**
+ * @route   GET /api/orders/admin
+ * @desc    Get all orders (admin route without auth)
+ * @access  Public (for admin interface)
+ */
+router.get('/admin', async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate('user', 'username email')
+      .sort({ createdAt: -1 })
+      .lean();
+    
+    res.status(200).json({
+      success: true,
+      orders
+    });
+  } catch (error) {
+    console.error('Get all orders error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error retrieving orders'
+    });
+  }
+});
+
+/**
+ * @route   GET /api/orders/stats
+ * @desc    Get user order statistics
+ * @access  Private
+ */
+router.get('/stats', protect, orderController.getMyOrderStats);
+
+/**
  * @route   GET /api/orders/:id
  * @desc    Get order by ID
  * @access  Private
@@ -82,13 +130,6 @@ router.patch(
   ],
   orderController.updateOrderStatus
 );
-
-/**
- * @route   GET /api/orders/stats
- * @desc    Get user order statistics
- * @access  Private
- */
-router.get('/stats', protect, orderController.getMyOrderStats);
 
 /**
  * @route   GET /api/orders/:id/sustainability

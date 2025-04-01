@@ -20,6 +20,12 @@ const Dashboard = React.lazy(() => import('./components/dashboard/Dashboard'));
 const Profile = React.lazy(() => import('./components/auth/Profile'));
 const OrderHistory = React.lazy(() => import('./components/orders/OrderHistory'));
 
+// Admin components
+const AdminDashboard = React.lazy(() => import('./components/admin/AdminDashboard'));
+const AdminDashboardHome = React.lazy(() => import('./components/admin/Dashboard'));
+const ProductManagement = React.lazy(() => import('./components/admin/ProductManagement'));
+const OrderManagement = React.lazy(() => import('./components/admin/OrderManagement'));
+
 function App() {
   // Green practice: Track and display energy consumption metrics
   const [resourceMetrics, setResourceMetrics] = useState({
@@ -85,6 +91,14 @@ function App() {
                     <Route path="/orders" element={<OrderHistory onApiCall={trackApiCall} />} />
                     <Route path="/dashboard" element={<Dashboard metrics={resourceMetrics} />} />
                     <Route path="/chat" element={<SustainableChat onApiCall={trackApiCall} />} />
+                  </Route>
+                  
+                  {/* Admin Routes */}
+                  <Route path="/admin">
+                    <Route index element={<Navigate to="/admin/dashboard" />} />
+                    <Route path="dashboard" element={<AdminDashboardHome />} />
+                    <Route path="products" element={<ProductManagement />} />
+                    <Route path="orders" element={<OrderManagement />} />
                   </Route>
                   
                   {/* Fallback for invalid routes */}
