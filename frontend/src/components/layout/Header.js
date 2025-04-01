@@ -291,7 +291,6 @@ const Header = ({ metrics }) => {
         /* User dropdown styles */
         .user-dropdown {
           position: relative;
-          height: 100%;
         }
         
         .dropdown-trigger {
@@ -323,12 +322,11 @@ const Header = ({ metrics }) => {
         }
         
         .dropdown-menu {
-          position: fixed;
-          margin-top: 10px;
-          right: inherit;
-          background: rgba(30, 41, 59, 0.98);
-          max-height: calc(100vh - 80px);
-          overflow-y: auto;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          width: 200px;
+          background: rgba(30, 41, 59, 0.95);
           border: 1px solid rgba(79, 70, 229, 0.3);
           border-radius: var(--radius-md);
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(79, 70, 229, 0.3);
@@ -336,24 +334,6 @@ const Header = ({ metrics }) => {
           z-index: 1000;
           backdrop-filter: blur(10px);
           animation: fadeInDown 0.2s ease-out;
-        }
-
-        /* Add custom scrollbar for dropdown */
-        .dropdown-menu::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        .dropdown-menu::-webkit-scrollbar-track {
-          background: rgba(79, 70, 229, 0.1);
-        }
-
-        .dropdown-menu::-webkit-scrollbar-thumb {
-          background: rgba(79, 70, 229, 0.3);
-          border-radius: 3px;
-        }
-
-        .dropdown-menu::-webkit-scrollbar-thumb:hover {
-          background: rgba(79, 70, 229, 0.5);
         }
         
         .dropdown-menu a,

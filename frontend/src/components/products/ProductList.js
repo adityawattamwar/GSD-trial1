@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { FaInfoCircle, FaRocket, FaStar, FaMeteor, FaSatellite } from "react-icons/fa";
+import { FaInfoCircle, FaRocket, FaStar, FaMeteor, FaSatellite, FaChevronDown } from "react-icons/fa";
 import ProductCard from "./ProductCard";
 import { useCart } from "../../context/CartContext";
 import axiosInstance, { getMockProducts } from "../../utils/axiosConfig";
@@ -14,6 +14,10 @@ const ProductList = ({ onApiCall }) => {
     sort: "price-asc",
   });
   const [usingMockData, setUsingMockData] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(3); // Initially show 3 products
+  
+  // Reference for lazy loading
+  const loadMoreRef = useRef(null);
 
   // Cache reference to avoid unnecessary API calls
   const productsCache = useRef({});
@@ -144,6 +148,49 @@ const ProductList = ({ onApiCall }) => {
     fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+  // Load more products when user scrolls
+  const loadMoreProducts = useCallback(() => {
+    // Add 3 more products at a time
+    setVisibleCount(prevCount => {
+      const newCount = prevCount + 3;
+      // Don't exceed total product count
+      return Math.min(newCount, products.length);
+    });
+  }, [products.length]);
+  
+  // Setup intersection observer for lazy loading
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        // When the load more trigger becomes visible
+        if (entries[0].isIntersecting && visibleCount < products.length) {
+          loadMoreProducts();
+        }
+      },
+      {
+        rootMargin: '300px 0px', // Preload before reaching the end
+        threshold: 0.1 // Trigger when even a small part is visible
+      }
+    );
+    
+    // Observe the load more trigger element
+    if (loadMoreRef.current && visibleCount < products.length) {
+      observer.observe(loadMoreRef.current);
+    }
+    
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
+      observer.disconnect();
+    };
+  }, [visibleCount, products.length, loadMoreProducts]);
+  
+  // Manually load more products
+  const handleManualLoadMore = () => {
+    loadMoreProducts();
+  };
 
   // Handle filter changes
   const handleFilterChange = (e) => {
@@ -390,6 +437,9 @@ const ProductList = ({ onApiCall }) => {
         <>
           <p style={{ marginBottom: "15px" }}>
             <strong>{products.length}</strong> products found
+            <span style={{ color: "#8B5CF6", marginLeft: "10px", fontSize: "0.9rem" }}>
+              (Scroll down to see more)
+            </span>
           </p>
           <div className="product-grid stars-bg">
             {/* Add cosmic background elements */}
@@ -397,14 +447,26 @@ const ProductList = ({ onApiCall }) => {
             <div className="shooting-star product-star"></div>
             <div className="shooting-star product-star delay2"></div>
             
-            {/* Render simplified product cards */}
-            {products.map((product) => (
-              <ProductCard 
-                key={product._id} 
-                product={product} 
-                onAddToCart={handleAddToCart} 
-              />
+            {/* Render only the currently visible products */}
+            {products.slice(0, visibleCount).map((product) => (
+              <div 
+                className="product-card-wrapper product-visible"
+                key={product._id}
+              >
+                <ProductCard 
+                  product={product} 
+                  onAddToCart={handleAddToCart} 
+                />
+              </div>
             ))}
+            
+            {/* Load more trigger (hidden but used for intersection observer) */}
+            {visibleCount < products.length && (
+              <div 
+                ref={loadMoreRef} 
+                className="load-more-trigger"
+              ></div>
+            )}
           </div>
 
           {products.length === 0 && (
@@ -413,6 +475,20 @@ const ProductList = ({ onApiCall }) => {
         </>
       )}
 
+      {/* Load more button and indicator */}
+      {!loading && visibleCount < products.length && (
+        <div className="cosmic-load-more">
+          <div className="cosmic-loading-spinner small"></div>
+          <p>Scrolling will reveal more products...</p>
+          <button 
+            className="cosmic-button load-more-btn" 
+            onClick={handleManualLoadMore}
+          >
+            Load More Products
+          </button>
+        </div>
+      )}
+      
       {/* Cosmic Shopping Tips */}
       <div className="cosmic-tips-container stars-bg">
         <h3 className="cosmic-tips-title">
@@ -491,6 +567,75 @@ const ProductList = ({ onApiCall }) => {
           animation-delay: 7s;
           top: 70%;
           left: 65%;
+        }
+        
+        .cosmic-load-more {
+          text-align: center;
+          padding: 15px;
+          margin: 20px 0;
+          color: #A5F3FC;
+          background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
+          border-radius: 8px;
+          border: 1px dashed #4C1D95;
+        }
+        
+        .cosmic-button.load-more-btn {
+          background: linear-gradient(145deg, #8B5CF6, #6D28D9);
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 30px;
+          margin-top: 15px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(109, 40, 217, 0.3);
+        }
+        
+        .cosmic-button.load-more-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(109, 40, 217, 0.4);
+          background: linear-gradient(145deg, #9D71FB, #7E3AF2);
+        }
+        
+        .product-card-wrapper {
+          position: relative;
+          transition: all 0.5s ease;
+          min-height: 350px;
+        }
+        
+        .load-more-trigger {
+          width: 100%;
+          height: 20px;
+          margin-top: 20px;
+          visibility: hidden; /* Hidden but still triggers intersection */
+        }
+        
+        .product-visible {
+          animation: fadeIn 0.5s ease forwards;
+        }
+        
+        @keyframes placeholder-shimmer {
+          0% { transform: translateX(-100%) rotate(0deg); }
+          100% { transform: translateX(100%) rotate(360deg); }
+        }
+        
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(10px); }
+        }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .cosmic-loading-spinner.small {
+          width: 25px;
+          height: 25px;
+          display: inline-block;
+          margin-right: 10px;
+          vertical-align: middle;
         }
         
         @keyframes pulse {
