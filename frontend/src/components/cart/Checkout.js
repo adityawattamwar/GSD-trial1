@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaLeaf, FaShieldAlt, FaTruck, FaCreditCard } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
 import "./Checkout.css";
+import axios from 'axios';
+import { useAuth } from "../../context/AuthContext"; // Assuming you have AuthContext
 
 const Checkout = ({ onApiCall }) => {
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ const Checkout = ({ onApiCall }) => {
     carbonFootprint,
     checkout,
   } = useCart();
+  const { user, token } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -34,36 +37,91 @@ const Checkout = ({ onApiCall }) => {
       [name]: value,
     }));
   };
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (items.length === 0) {
+    
+    // Debug log to check items
+    console.log('Cart Items:', items);
+    console.log('Total Items:', totalItems);
+  
+    // Check if items exist and have length
+    if (!items || items.length === 0) {
       setError("Your cart is empty");
       return;
     }
-
+  
     try {
       setLoading(true);
       setError(null);
-
+  
       // Track API call
       if (onApiCall) onApiCall(2);
-
-      // Simulate checkout process
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Success message
-      alert("Order placed successfully!");
-      navigate("/");
+  
+      // Calculate final price including shipping and carbon offset
+      const finalPrice = totalPrice + 
+        (greenDelivery ? 0 : 5) + 
+        (carbonOffset ? carbonFootprint * 0.1 : 0);
+  
+      // Map cart items to order items structure
+      const orderItems = items.map(item => ({
+        product: item.product._id, // Make sure to access product ID correctly
+        name: item.product.name,
+        quantity: item.quantity,
+        price: item.product.price,
+        image: item.product.image
+      }));
+  
+      // Prepare order data
+      const orderData = {
+        user: user._id, // Add user ID from auth context
+        shippingAddress: {
+          street: formData.address,
+          city: formData.city,
+          state: formData.state || 'NA',
+          zipCode: formData.zipCode,
+          country: 'USA'
+        },
+        paymentMethod: formData.paymentMethod,
+        greenShipping: greenDelivery,
+        carbonOffset: carbonOffset,
+        orderItems: orderItems,
+        subtotal: totalPrice,
+        shippingPrice: greenDelivery ? 0 : 5,
+        tax: totalPrice * 0.08, // 8% tax
+        totalPrice: finalPrice
+      };
+  
+      console.log('Sending order data:', orderData); // Debug log
+  
+      // Make API call to create order
+      const response = await axios.post('http://localhost:5000/api/orders', 
+        orderData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+  
+      console.log('Response:', response); // Debug log
+  
+      if (response.data) {
+        // Clear cart after successful order
+        await checkout();
+        
+        // Success message
+        alert("Order placed successfully!");
+        navigate("/orders");
+      }
     } catch (err) {
-      setError("Error processing your order. Please try again.");
-      console.error(err);
+      const errorMessage = err.response?.data?.message || "Error processing your order. Please try again.";
+      setError(errorMessage);
+      console.error('Order creation error:', err);
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="checkout-container">
       <h1>Checkout</h1>

@@ -18,10 +18,10 @@ const OrderHistory = ({ onApiCall }) => {
       try {
         setLoading(true);
         
-        const response = await axios.get('/api/orders/history');
+        const response = await axios.get('/api/orders');
         
         if (response.data.success) {
-          setOrders(response.data.orders);
+          setOrders(response.data.orders || []);
           
           // Track API call with approximate data size
           if (onApiCall) {
@@ -45,7 +45,7 @@ const OrderHistory = ({ onApiCall }) => {
     if (user) {
       fetchOrders();
     }
-  }, [user, onApiCall]);
+  }, []);
 
   // Toggle order details expansion
   const toggleOrderExpand = (orderId) => {
@@ -178,11 +178,11 @@ const OrderHistory = ({ onApiCall }) => {
                 </div>
                 
                 <div className="order-status-price">
-                  <div className={`status-badge ${getStatusBadgeClass(order.status)}`}>
-                    {order.status}
+                  <div className={`status-badge ${getStatusBadgeClass(order.orderStatus || 'pending')}`}>
+                    {order.orderStatus || 'Pending'}
                   </div>
                   <div className="order-total">
-                    {formatPrice(order.totalAmount)}
+                    {formatPrice(order.totalPrice || 0)}
                   </div>
                 </div>
               </div>
@@ -192,7 +192,7 @@ const OrderHistory = ({ onApiCall }) => {
                   <div className="order-items">
                     <h3 className="details-heading">Items</h3>
                     <ul className="items-list">
-                      {order.items.map((item) => (
+                      {(order.orderItems || []).map((item) => (
                         <li key={item.product._id || item._id} className="order-item">
                           <div className="item-image">
                             <img 
@@ -247,19 +247,19 @@ const OrderHistory = ({ onApiCall }) => {
                   <div className="order-summary-totals">
                     <div className="totals-row">
                       <span>Subtotal:</span>
-                      <span>{formatPrice(order.subtotal)}</span>
+                      <span>{formatPrice(order.subtotal || 0)}</span>
                     </div>
                     <div className="totals-row">
                       <span>Shipping:</span>
-                      <span>{formatPrice(order.shippingCost)}</span>
+                      <span>{formatPrice(order.shippingPrice || 0)}</span>
                     </div>
                     <div className="totals-row">
                       <span>Tax:</span>
-                      <span>{formatPrice(order.taxAmount)}</span>
+                      <span>{formatPrice(order.tax || 0)}</span>
                     </div>
                     <div className="totals-row total">
                       <span>Total:</span>
-                      <span>{formatPrice(order.totalAmount)}</span>
+                      <span>{formatPrice(order.totalPrice || 0)}</span>
                     </div>
                   </div>
                 </div>

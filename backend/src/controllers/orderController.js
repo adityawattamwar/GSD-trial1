@@ -39,20 +39,25 @@ exports.createOrder = async (req, res) => {
       carbonOffset = false 
     } = req.body;
 
-    // Get user's cart (with populated products)
-    const cart = await Cart.findOne({ user: req.user.id })
+    const userId = req.user.id.toString();
+    console.log('User ID:', req.user.id);
+    console.log('User ID:', userId);
+
+
+    const cart = await Cart.findOne()
       .populate({
         path: 'items.product',
-        select: 'name price image sustainabilityScore carbonFootprint' // Only select needed fields
+        select: 'name price image sustainabilityScore carbonFootprint'
       });
 
-    if (!cart || cart.items.length === 0) {
+    console.log('Cart:', cart);
+
+    if (!cart || !cart.items || cart.items.length === 0) {
       return res.status(400).json({
         success: false,
         message: 'Cart is empty, cannot create order'
       });
     }
-
     // Calculate pricing
     const subtotal = cart.items.reduce((sum, item) => 
       sum + (item.product.price * item.quantity), 0);
@@ -148,7 +153,7 @@ exports.getMyOrders = async (req, res) => {
     const total = await Order.countDocuments({ user: req.user.id });
 
     // Get orders with pagination and field projection
-    const orders = await Order.find({ user: req.user.id })
+    const orders = await Order.find()
       .sort({ createdAt: -1 }) // Most recent first
       .skip(skip)
       .limit(limit)

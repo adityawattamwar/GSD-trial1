@@ -97,13 +97,6 @@ const Header = ({ metrics }) => {
               </Link>
             </li>
             <li>
-              <Link to="/chat" className={location.pathname === '/chat' ? 'active' : ''}>
-                <FaComments className="nav-icon" />
-                <span className="nav-text">Space Guide</span>
-                <div className="nav-highlight"></div>
-              </Link>
-            </li>
-            <li>
               <Link to="/cart" className={`cart-icon ${location.pathname === '/cart' ? 'active' : ''}`}>
                 <FaShoppingCart size={20} />
                 {totalItems > 0 && (
@@ -176,7 +169,6 @@ const Header = ({ metrics }) => {
           top: 0;
           z-index: 1000;
           transition: all 0.3s ease;
-          overflow: hidden;
         }
         
         .header-scrolled {
@@ -193,6 +185,19 @@ const Header = ({ metrics }) => {
           background: var(--cosmic-gradient);
           opacity: 0.9;
           z-index: -1;
+        }
+        
+        .header-content {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 1rem 2rem;
+          max-width: 1400px;
+          margin: 0 auto;
+          /* Remove any overflow restrictions */
+          overflow: visible;
+          z-index: 5; /* Ensure content has appropriate z-index */
         }
         
         .cosmic-logo {
@@ -244,6 +249,13 @@ const Header = ({ metrics }) => {
           animation: pulse 2s infinite alternate;
         }
         
+        .nav-links {
+          position: static; /* Change from relative to static */
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+        
         .nav-links a {
           position: relative;
           display: flex;
@@ -290,7 +302,7 @@ const Header = ({ metrics }) => {
         
         /* User dropdown styles */
         .user-dropdown {
-          position: relative;
+          position: static; /* Change from relative to static */
         }
         
         .dropdown-trigger {
@@ -322,18 +334,22 @@ const Header = ({ metrics }) => {
         }
         
         .dropdown-menu {
-          position: absolute;
-          top: 100%;
-          right: 0;
-          width: 200px;
+          position: fixed; /* Change from absolute to fixed */
+          top: 70px; /* Adjust based on your header height */
+          right: 20px;
+          min-width: 200px;
           background: rgba(30, 41, 59, 0.95);
           border: 1px solid rgba(79, 70, 229, 0.3);
           border-radius: var(--radius-md);
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(79, 70, 229, 0.3);
-          overflow: hidden;
-          z-index: 1000;
           backdrop-filter: blur(10px);
           animation: fadeInDown 0.2s ease-out;
+          transform-origin: top right;
+          padding: 0.5rem 0;
+          z-index: 9999; /* Ensure it's on top of everything */
+          max-height: 80vh; /* Prevent it from going off-screen */
+          overflow-y: auto; /* Add scrolling if needed */
+          width: 220px; /* Fixed width */
         }
         
         .dropdown-menu a,
@@ -341,7 +357,7 @@ const Header = ({ metrics }) => {
           display: flex;
           align-items: center;
           padding: 0.75rem 1rem;
-          color: var(--text-color);
+          color: #f9fafb; /* Lighter text for better visibility */
           text-decoration: none;
           transition: all 0.2s ease;
           border-bottom: 1px solid rgba(79, 70, 229, 0.1);
@@ -350,8 +366,11 @@ const Header = ({ metrics }) => {
           background: none;
           border: none;
           font-family: inherit;
-          font-size: inherit;
+          font-size: 0.95rem; /* Slightly larger for better readability */
           cursor: pointer;
+          white-space: nowrap; /* Prevent text wrapping */
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         
         .dropdown-menu a:last-child,

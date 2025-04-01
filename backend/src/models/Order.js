@@ -80,7 +80,7 @@ const orderSchema = new Schema({
   paymentMethod: {
     type: String,
     required: true,
-    enum: ['credit_card', 'paypal', 'crypto', 'bank_transfer']
+    enum: ['credit_card', 'paypal', 'crypto', 'bank_transfer','card']
   },
   paymentResult: {
     id: String,
