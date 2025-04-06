@@ -95,9 +95,9 @@ const ProductManagement = () => {
   };
   
   return (
-    <div className="admin-page">
-      <h1>Admin Product Management</h1>
-      <p className="subtitle">Add new products to the store</p>
+    <div className="admin-page dark-theme">
+      <h1 className="text-light">Admin Product Management</h1>
+      <p className="subtitle text-light">Add new products to the store</p>
       
       {/* Message Display */}
       {message && (
@@ -107,12 +107,12 @@ const ProductManagement = () => {
       )}
       
       {/* Add Product Form */}
-      <div className="admin-form">
-        <h2><FaPlus /> Add New Product</h2>
+      <div className="admin-form dark-form">
+        <h2 className="text-light"><FaPlus /> Add New Product</h2>
         
         <form onSubmit={handleSubmit}>
           <div className="form-section">
-            <h3>Basic Information</h3>
+            <h3 className="text-light">Basic Information</h3>
             
             <div className="form-group">
               <label htmlFor="name">Product Name *</label>
@@ -182,7 +182,7 @@ const ProductManagement = () => {
           </div>
           
           <div className="form-section">
-            <h3>Sustainability Information</h3>
+            <h3 className="text-light">Sustainability Information</h3>
             
             <div className="form-row">
               <div className="form-group">
@@ -257,10 +257,10 @@ const ProductManagement = () => {
       
       {/* Product List */}
       <div className="product-list">
-        <h2>Products ({products.length})</h2>
+        <h2 className="text-light">Products ({products.length})</h2>
         
         {products.length === 0 ? (
-          <p>No products found.</p>
+          <p className="text-light">No products found.</p>
         ) : (
           <table>
             <thead>

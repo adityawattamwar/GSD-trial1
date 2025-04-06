@@ -635,3 +635,92 @@ th{
     color: #090909
   };
 }
+
+/* Dark Theme Styles */
+.admin-page.dark-theme {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid #2d2d2d;
+}
+
+.dark-theme h1 {
+  color: #4CAF50;
+  border-bottom: 2px solid #4CAF50;
+}
+
+.dark-theme .subtitle {
+  color: #b0b0b0;
+}
+
+.dark-theme .admin-form {
+  background-color: #242424;
+  border: 1px solid #333;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .form-group label {
+  color: #e0e0e0;
+}
+
+.dark-theme .form-group input,
+.dark-theme .form-group textarea {
+  background-color: #333;
+  border: 1px solid #444;
+  color: #e0e0e0;
+}
+
+.dark-theme .form-group input:focus,
+.dark-theme .form-group textarea:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.25);
+}
+
+.dark-theme .submit-button {
+  background-color: #4CAF50;
+}
+
+.dark-theme .submit-button:hover {
+  background-color: #45a049;
+}
+
+.dark-theme .product-list {
+  background-color: #242424;
+  border: 1px solid #333;
+}
+
+.dark-theme .product-list table th {
+  background-color: #333;
+  color: #e0e0e0;
+}
+
+.dark-theme .product-list table td {
+  color: #e0e0e0;
+  border-bottom: 1px solid #333;
+}
+
+.dark-theme .product-list table tbody tr:hover {
+  background-color: #2a2a2a;
+}
+
+.dark-theme .message.success {
+  background-color: #1e4620;
+  color: #a5d6a7;
+}
+
+.dark-theme .message.error {
+  background-color: #461b1b;
+  color: #ef9a9a;
+}
+
+.dark-theme .form-section {
+  border-bottom: 1px solid #333;
+}
+
+.dark-theme .checkbox-row label {
+  color: #e0e0e0;
+}
+
+.text-light {
+  color: #e0e0e0 !important;
+}

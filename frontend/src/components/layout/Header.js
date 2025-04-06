@@ -92,7 +92,7 @@ const Header = ({ metrics }) => {
             <li>
               <Link to="/green-metrics" className={location.pathname === '/green-metrics' ? 'active' : ''}>
                 <FaChartLine className="nav-icon" />
-                <span className="nav-text">Space Stats</span>
+                <span className="nav-text">Metrics</span>
                 <div className="nav-highlight"></div>
               </Link>
             </li>

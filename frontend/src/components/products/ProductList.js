@@ -513,7 +513,7 @@ const ProductList = ({ onApiCall }) => {
       )}
       
       {/* Cosmic Shopping Tips */}
-      <div className="cosmic-tips-container stars-bg">
+      {/* <div className="cosmic-tips-container stars-bg">
         <h3 className="cosmic-tips-title">
           <FaRocket className="cosmic-icon" />
           <span>Cosmic Shopping Tips</span>
@@ -524,7 +524,7 @@ const ProductList = ({ onApiCall }) => {
           <li><FaStar className="tip-icon" /> Combine items for a complete space-themed experience</li>
           <li><FaStar className="tip-icon" /> Check our home page for new cosmic arrivals</li>
         </ul>
-      </div>
+      </div> */}
       
       {/* Add styles for cosmic elements */}
       <style jsx>{`
