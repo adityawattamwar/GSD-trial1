@@ -250,7 +250,7 @@ const ProductList = ({ onApiCall }) => {
               onChange={handleFilterChange}
               className="cosmic-select"
             >
-              <option value="">All Galaxies</option>
+              <option value="">All Categories</option>
               <option value="Electronics">Electronics</option>
               <option value="Clothing">Clothing</option>
               <option value="Office">Office</option>
