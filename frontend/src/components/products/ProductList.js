@@ -363,12 +363,35 @@ const ProductList = ({ onApiCall }) => {
           font-size: 0.95rem;
           box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
           transition: all 0.3s ease;
+          position: relative;
+          z-index: 100; /* Ensure dropdown appears above other elements */
+          appearance: auto !important; /* Force browser default appearance */
+          -webkit-appearance: auto !important;
+          -moz-appearance: auto !important;
         }
         
         .cosmic-select:hover, .cosmic-select:focus {
           box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
           border-color: #7E22CE;
           outline: none;
+        }
+        
+        /* Style for dropdown options */
+        .cosmic-select option {
+          background-color: #1E293B; /* Dark background for options */
+          color: #E2E8F0; /* Light text color */
+          padding: 10px; /* Add padding for better readability */
+          font-size: 0.95rem;
+        }
+        
+        /* Fix for Firefox */
+        @-moz-document url-prefix() {
+          .cosmic-select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23E2E8F0' d='M6 8.825l-6-6h12z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.7em top 50%;
+            padding-right: 1.5em;
+          }
         }
         
         .cosmic-checkbox {

@@ -23,7 +23,7 @@ const Footer = () => {
       
       <div className="footer-content">
         <div className="footer-section">
-          <h3 className="cosmic-heading">Cosmic Shop</h3>
+          <h3 className="cosmic-heading">Smart Shop</h3>
           <p>Interstellar commerce platform with cosmic products.</p>
           <div className="cosmic-badge">
             <FaStar className="cosmic-pulse" />
@@ -50,7 +50,7 @@ const Footer = () => {
                 // On-demand loading to save resources
                 alert('Cosmic calculator loading on demand to conserve energy');
               }}>
-                <span className="link-text">Cosmic Calculator</span>
+                <span className="link-text">Smart Calculator</span>
               </a>
             </li>
             <li><Link to="/green-metrics" className="cosmic-link"><span className="link-text">Cosmic Impact</span></Link></li>
@@ -58,11 +58,11 @@ const Footer = () => {
         </div>
         
         <div className="footer-section">
-          <h3 className="cosmic-heading">Our Cosmic Technologies</h3>
+          <h3 className="cosmic-heading">Our Green Technologies</h3>
           <ul className="footer-links cosmic-features">
             <li>
               <FaAtom className="cosmic-icon" />
-              <span> Quantum-efficient code</span>
+              <span>efficient code</span>
             </li>
             <li>
               <FaSatellite className="cosmic-icon" />
@@ -70,7 +70,7 @@ const Footer = () => {
             </li>
             <li>
               <FaMeteor className="cosmic-icon" />
-              <span> Interstellar product focus</span>
+              <span> Sustainability</span>
             </li>
           </ul>
         </div>
@@ -78,7 +78,7 @@ const Footer = () => {
       
       <div className="cosmic-copyright">
         <p>
-          &copy; {currentYear} Cosmic Shop. All rights reserved across the universe. 
+          &copy; {currentYear} Smart Shop. All rights reserved across the universe. 
           <br />
           <small>Engineered with quantum efficiency to minimize cosmic energy consumption.</small>
         </p>

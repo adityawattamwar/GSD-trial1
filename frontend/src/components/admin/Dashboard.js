@@ -147,14 +147,7 @@ const Dashboard = () => {
               <p className="admin-card-description">Total revenue generated</p>
             </div>
             
-            <div className="admin-card">
-              <div className="admin-card-header">
-                <h3 className="admin-card-title">Sustainability</h3>
-                <FaLeaf className="admin-card-icon" />
-              </div>
-              <div className="admin-card-value">{stats.sustainabilityScore.toFixed(1)}/100</div>
-              <p className="admin-card-description">Average product sustainability score</p>
-            </div>
+            
           </div>
           
           {/* Recent Orders */}
@@ -168,11 +161,11 @@ const Dashboard = () => {
               <table className="admin-table">
                 <thead>
                   <tr>
-                    <th>Order ID</th>
-                    <th>Date</th>
-                    <th>Customer</th>
-                    <th>Total</th>
-                    <th>Status</th>
+                    <th color='#007bff'>Order ID</th>
+                    <th color='#007bff'>Date</th>
+                    <th color='#007bff'>Customer</th>
+                    <th color='#007bff'>Total</th>
+                    <th color='#007bff'>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -182,11 +175,11 @@ const Dashboard = () => {
                     </tr>
                   ) : (
                     stats.recentOrders.map(order => (
-                      <tr key={order._id}>
-                        <td>#{order._id.substring(order._id.length - 6).toUpperCase()}</td>
-                        <td>{formatDate(order.createdAt)}</td>
-                        <td>{order.user.username || order.user.email || 'Unknown'}</td>
-                        <td>{formatCurrency(order.totalPrice)}</td>
+                      <tr  color='#007bff' key={order._id}>
+                        <td color='#007bff'>#{order._id.substring(order._id.length - 6).toUpperCase()}</td>
+                        <td color='#007bff'>{formatDate(order.createdAt)}</td>
+                        <td color='#007bff'>{order.user.username || order.user.email || 'Unknown'}</td>
+                        <td color='#007bff'>{formatCurrency(order.totalPrice)}</td>
                         <td>
                           <span className={`status-badge ${getStatusBadgeClass(order.orderStatus)}`}>
                             {order.orderStatus}
@@ -203,18 +196,13 @@ const Dashboard = () => {
           {/* Quick Actions */}
           <div className="admin-section">
             <div className="section-header">
-              <h3><FaChartLine /> Quick Actions</h3>
+              
             </div>
             
             <div className="quick-actions">
               <Link to="/admin/products" className="action-card">
                 <FaBoxOpen className="action-icon" />
-                <span>Add New Product</span>
-              </Link>
-              
-              <Link to="/admin/orders" className="action-card">
-                <FaClipboardList className="action-icon" />
-                <span>View Recent Orders</span>
+                <span className='hello'>Add New Product</span>
               </Link>
             </div>
           </div>

@@ -45,10 +45,10 @@ const Header = ({ metrics }) => {
     
     const score = metrics.pageLoads + (metrics.apiCalls * 2) + (metrics.dataTransferred / 50);
     
-    if (score < 10) return 'Quantum';
-    if (score < 20) return 'Nebula';
-    if (score < 30) return 'Stellar';
-    if (score < 50) return 'Solar';
+    if (score < 10) return 'Low';
+    if (score < 20) return 'Moderate';
+    if (score < 30) return 'High';
+    if (score < 50) return 'Very high';
     return 'Cosmic';
   };
   
@@ -71,7 +71,7 @@ const Header = ({ metrics }) => {
       <div className="header-content">
         <Link to="/" className="logo cosmic-logo">
           <FaRocket size={28} className="logo-icon" />
-          <span>Cosmic Shop</span>
+          <span>Smart Shop</span>
           <div className="logo-glow"></div>
         </Link>
         

@@ -3,8 +3,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  color: #d4baba;
-  background-color: #e9ecef; /* Darker background for better contrast */
+  color: #0b0b0b;
+  background-color: #0c0c0c; /* Darker background for better contrast */
 }
 
 /* Header */
@@ -120,7 +120,7 @@
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
-  background-color: #f8f9fa; /* Slightly off-white background */
+  background-color: #090909; /* Slightly off-white background */
   border-top-left-radius: 10px; /* Rounded corner where it meets the sidebar */
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); /* Inner shadow for depth */
 }
@@ -131,6 +131,9 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+}
+th{
+ color: #090909;
 }
 
 .admin-card {
@@ -195,11 +198,14 @@
   padding: 1rem 1.5rem;
   text-align: left;
   border-bottom: 1px solid #e9ecef;
+  color: #0e0d0d;
 }
-
+.hello{
+  font-size: 30px;
+}
 .admin-table th {
   background-color: #f8f9fa;
-  color: #151515;
+  color: #0e0d0d;
   font-weight: 600;
 }
 
@@ -625,4 +631,7 @@
   .product-list {
     padding: 1.5rem;
   }
+  th{
+    color: #090909
+  };
 }
