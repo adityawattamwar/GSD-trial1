@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaLeaf, FaTrash, FaMinus, FaPlus, FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
+import axios from 'axios';
+
+const PEXELS_API_KEY = "joqRztycjhwQBbr00BiSiodU577DXk7kJTOZ3hImJtWkN3Gr4NTcFFWT";
 
 const Cart = ({ onApiCall }) => {
+  const [productImages, setProductImages] = useState({});
   const {
     items,
     totalItems,
@@ -18,6 +22,40 @@ const Cart = ({ onApiCall }) => {
     toggleGreenDelivery,
     toggleCarbonOffset
   } = useCart();
+  
+  useEffect(() => {
+    const fetchImages = async () => {
+      const imagePromises = items.map(async (item) => {
+        try {
+          const response = await axios.get(
+            `https://api.pexels.com/v1/search?query=${item.product.name}&per_page=1`,
+            {
+              headers: { Authorization: PEXELS_API_KEY }
+            }
+          );
+
+          if (response.data.photos.length > 0) {
+            return { id: item.product._id, url: response.data.photos[0].src.medium };
+          }
+          return { id: item.product._id, url: `https://via.placeholder.com/100x100?text=${encodeURIComponent(item.product.name)}` };
+        } catch (error) {
+          console.error("Error fetching image from Pexels:", error);
+          return { id: item.product._id, url: `https://via.placeholder.com/100x100?text=${encodeURIComponent(item.product.name)}` };
+        }
+      });
+
+      const images = await Promise.all(imagePromises);
+      const imageMap = images.reduce((acc, img) => ({
+        ...acc,
+        [img.id]: img.url
+      }), {});
+      setProductImages(imageMap);
+    };
+
+    if (items.length > 0) {
+      fetchImages();
+    }
+  }, [items]);
   
   // Green tip to display
   const getRandomGreenTip = () => {
@@ -76,7 +114,7 @@ const Cart = ({ onApiCall }) => {
                 {items.map(item => (
                   <div key={item.product._id} className="cart-item">
                     <img
-                      src={item.product.image || `https://via.placeholder.com/100x100?text=${encodeURIComponent(item.product.name)}`}
+                      src={productImages[item.product._id] || `https://via.placeholder.com/100x100?text=${encodeURIComponent(item.product.name)}`}
                       alt={item.product.name}
                       className="cart-item-image"
                       loading="lazy" // Green practice: lazy loading
@@ -169,7 +207,7 @@ const Cart = ({ onApiCall }) => {
               </div>
               
               {/* Green delivery and carbon offset options */}
-              <div className="green-options">
+              {/* <div className="green-options">
                 <h3 style={{ display: 'flex', alignItems: 'center' }}>
                   <FaLeaf style={{ marginRight: '8px' }} />
                   Eco-Friendly Options
@@ -214,7 +252,7 @@ const Cart = ({ onApiCall }) => {
                   <FaLeaf style={{ marginRight: '5px' }} />
                   <span>Tip: {getRandomGreenTip()}</span>
                 </div>
-              </div>
+              </div> */}
               
               <div style={{ marginTop: '20px', textAlign: 'right' }}>
                 <Link to="/" className="btn btn-outline" style={{ marginRight: '10px' }}>
