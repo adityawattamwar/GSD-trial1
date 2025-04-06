@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaLeaf, FaShieldAlt, FaTruck, FaCreditCard } from "react-icons/fa";
+import { FaLeaf, FaShieldAlt, FaTruck, FaCreditCard, FaMoneyBillWave, FaMobile } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
 import "./Checkout.css";
 import axios from 'axios';
@@ -210,6 +210,36 @@ const Checkout = ({ onApiCall }) => {
                 <label htmlFor="card">
                   <FaCreditCard />
                   <span>Credit Card</span>
+                </label>
+              </div>
+
+              <div className="payment-option">
+                <input
+                  type="radio"
+                  id="cod"
+                  name="paymentMethod"
+                  value="cod"
+                  checked={formData.paymentMethod === "cod"}
+                  onChange={handleChange}
+                />
+                <label htmlFor="cod">
+                  <FaMoneyBillWave />
+                  <span>Cash on Delivery</span>
+                </label>
+              </div>
+
+              <div className="payment-option">
+                <input
+                  type="radio"
+                  id="upi"
+                  name="paymentMethod"
+                  value="upi"
+                  checked={formData.paymentMethod === "upi"}
+                  onChange={handleChange}
+                />
+                <label htmlFor="upi">
+                  <FaMobile />
+                  <span>UPI</span>
                 </label>
               </div>
             </div>
