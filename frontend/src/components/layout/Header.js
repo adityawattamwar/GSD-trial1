@@ -264,7 +264,7 @@ const Header = ({ metrics }) => {
           color: var(--light-text);
           text-decoration: none;
           transition: all 0.3s ease;
-          overflow: hidden;
+          // overflow: hidden;
         }
         
         .nav-icon {

@@ -387,3 +387,9 @@ exports.updateGreenOptions = async (req, res) => {
     });
   }
 };
+
+
+
+// analyse the complete file what all green practices are implemented like making it more 
+// energy efficient cahcing fast reduxcing carbon footprint following green software 
+// principles and more.

@@ -219,7 +219,7 @@ const Checkout = ({ onApiCall }) => {
                   id="cod"
                   name="paymentMethod"
                   value="cod"
-                  checked={formData.paymentMethod === "cod"}
+                  checked={formData.paymentMethod === "card"}
                   onChange={handleChange}
                 />
                 <label htmlFor="cod">
@@ -234,7 +234,7 @@ const Checkout = ({ onApiCall }) => {
                   id="upi"
                   name="paymentMethod"
                   value="upi"
-                  checked={formData.paymentMethod === "upi"}
+                  checked={formData.paymentMethod === "card"}
                   onChange={handleChange}
                 />
                 <label htmlFor="upi">
